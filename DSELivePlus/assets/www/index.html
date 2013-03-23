@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>DSELive</title> 
+	
+	<meta name="viewport" content="width=320, initial-scale=1; user-scalable=no;"> 
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<style>
+	.small-text{font-size:10px;}
+	table {
+		background-color: whiteSmoke;
+		border-radius: 6px;
+		-webkit-border-radius: 6px;
+		-moz-border-radius: 6px;
+	}
+	table td, table th {
+		text-align: left;
+	}
+	table th {
+		color: #333;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: normal;
+	}
+	table td {
+		line-height: 20px;
+		color: #0084B4;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 14px;
+		border-bottom: 1px solid #fff;
+		border-top: 1px solid #fff;
+	}
+	table td:hover {
+		background-color: #fff;
+	}
+	</style>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+	loadHome=function(){
+		var url="http://kaal-proxy.appspot.com/proxy/?url=http://202.84.39.36/admin-real/mst.txt&type=json&page2json=1&callback=?";
+		$.getJSON(url, function(data){
+			var info=data.page2json.substr(0,600);
+			var dsi=info.match(/ALL SHARES PRICE INDEX \(DSI\)(.+)DSE - 20 INDEX \(DS20\)/)[1];
+			var ds20=info.match(/DSE - 20 INDEX \(DS20\)(.+)DSE GENERAL INDEX \(DGEN\)/)[1];
+			var dgen=info.match(/DSE GENERAL INDEX \(DGEN\)(.+)All Category/)[1];
+			var html='DSI: '+dsi+'%<br />';
+			html+='DS20: '+ds20+'%<br />';
+			html+='DGEN: '+dgen+'%<br />';
+			$("#divhome").html(html);
+		});	
+	};
+
+	loadIndex=function(){
+		var url="http://kaal-proxy.appspot.com/proxy/?url=http://www.biasl.net/ContenIframe/ContentWelcome.aspx&type=json&page2json=1&callback=?";
+		$.getJSON(url, function(data){
+			var info=data.page2json;			
+			var div = document.createElement('div');
+			div.innerHTML = info;
+			var info = div.firstChild.nodeValue.replace(/\.\.\/images\/high\.gif/g,"http://www.biasl.net/images/high.gif").replace(/\.\.\/images\/low\.gif/g,"http://www.biasl.net/images/low.gif");
+			var html=$(info).find(".marketdata:eq(0)").parent();
+			$(html).append('<p class="small-text">*'+$(info).find(".WelcomeText:eq(0)").text()+'</p>');
+			$("#divhome").html(html);
+		});	
+	};	
+	
+	$(function(){
+		loadIndex();
+	});	
+	</script> 	
+	
+	</head> 
+
+<body> 
+	<div data-role="content">	
+		<div id="divhome">
+			<img src="ajax-loader.gif"></img> Loading...
+		</div>
+		<div>
+			<img src="http://202.84.39.36/admin-real/graphdynamictest/dsi_index.png" />
+			<img src="http://202.84.39.36/admin-real/graphdynamictest/dse_gen_index.png" />
+			<img style="width:100%;" src="http://www.bdstockprice.com/dailyIndexGraph.php" />
+		</div>
+	</div><!-- /content -->
+</body>
+
+
+</html>

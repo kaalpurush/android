@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/add_to_watch"
+        android:title="Add to watchlist"
+     />
+    <item android:id="@+id/remove_from_watch"
+        android:title="Remove from watchlist"
+     />
+     <item android:id="@+id/show_company_info"
+        android:title="Show company info"
+     />
+     <item android:id="@+id/show_company_info2"
+        android:title="Show company info"
+     />     
+</menu>

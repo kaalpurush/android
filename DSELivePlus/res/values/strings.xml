@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">DSELive+</string>
+    <string name="app_description">DSELive is a live stock market viewer for Dhaka Stock Exchange(dse)</string>
+	<string name="app_credit">Presented By:\nCodelixir Lab.\nhttp://www.codelixir.com</string>
+	<string name="app_more">More apps from us</string>
+	<string name="loading">Loading..</string>
+	<string name="widget_label">Live Widget</string>
+	<string name="portfolio">Portfolio</string>
+
+</resources>
