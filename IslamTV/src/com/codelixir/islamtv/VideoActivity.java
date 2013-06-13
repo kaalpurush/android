@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codelixir.deshitv;
+package com.codelixir.islamtv;
 
 import java.util.Calendar;
 

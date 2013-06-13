@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DeshiTV.iml" filepath="$PROJECT_DIR$/DeshiTV.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Open Source Projects/vitamio-Android-3.0/VitamioBundle/VitamioBundle.iml" filepath="$PROJECT_DIR$/../../Open Source Projects/vitamio-Android-3.0/VitamioBundle/VitamioBundle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Open Source Projects/JakeWharton-ActionBarSherlock-88fc341/library/library.iml" filepath="$PROJECT_DIR$/../../Open Source Projects/JakeWharton-ActionBarSherlock-88fc341/library/library.iml" />
+    </modules>
+  </component>
+</project>
+

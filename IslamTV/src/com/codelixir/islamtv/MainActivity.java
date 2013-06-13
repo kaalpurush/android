@@ -1,4 +1,4 @@
-package com.codelixir.deshitv;
+package com.codelixir.islamtv;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -163,7 +163,7 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 	
     public void update() {
     	Log.d("updating", "Channel");
-    	String server="http://deshitv.appspot.com/channel";
+    	String server="http://deshitv.appspot.com/channel/islam";
         downloader=new DownloadWebPageTask();
     	downloader.execute(new String[] { server });
 	}
