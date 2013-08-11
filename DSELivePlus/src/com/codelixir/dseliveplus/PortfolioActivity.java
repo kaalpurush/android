@@ -1,13 +1,18 @@
 package com.codelixir.dseliveplus;
 
+import android.net.Uri;
 import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 import android.util.Log;
 import android.webkit.WebView;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 public class PortfolioActivity extends SherlockActivity {
 	static Activity activity;
 	WebView webview;
+	ProgressDialog pDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,7 @@ public class PortfolioActivity extends SherlockActivity {
 		
     	webview = (WebView)activity.findViewById(R.id.webView); 
     	webview.getSettings().setJavaScriptEnabled(true);
-    	webview.loadUrl("file:///android_asset/www/portfolio.html");
+    	webview.loadUrl("http://dse-live.appspot.com/template/portfolio.html");
     	webview.addJavascriptInterface(new JavaScriptInterface(this), "jsInterface");
 	}
 
@@ -74,7 +80,6 @@ public class PortfolioActivity extends SherlockActivity {
 	    
 	    public String getSetting(String key){
 	    	SharedPreferences settings = activity.getSharedPreferences("Settings", 0);
-	    	//Toast.makeText(getApplicationContext(),settings.getString(key, ""), Toast.LENGTH_SHORT).show();
 	    	return settings.getString(key, "[]"); 
 	    }
 	    
@@ -83,6 +88,47 @@ public class PortfolioActivity extends SherlockActivity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putString(key, value);
             return editor.commit();
+	    }
+	    
+	    public void showSpinner(String message,String title){
+	    	pDialog = ProgressDialog.show(activity, title, 
+	    			message, true);
+	    }
+	    
+	    public void hideSpinner(){
+	    	try{
+	    		if(pDialog!=null && pDialog.isShowing())
+	    			pDialog.dismiss();
+	    	}
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    }
+	    
+	    public boolean viewUrl(String url){
+	    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+	    	return false;
+	    }
+	    
+	    public boolean showApps(){
+	    	startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://search?q=pub:Codelixir+Lab")));
+	    	return false;
+	    }
+	    
+	    public int versionCode(){
+	    	PackageInfo pInfo;
+			try {
+				pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+				return pInfo.versionCode;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			return -1;	    		    	
+	    }
+	    
+	    public void exitApp(){
+	    	finish();
 	    }
 	    
 	}

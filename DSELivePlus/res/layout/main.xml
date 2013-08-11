@@ -3,26 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="center" >
     
-     <com.google.ads.AdView
-        android:id="@+id/ad"
+    <LinearLayout
+        android:id="@+id/ad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="a14f9d94e911a41"
-        ads:loadAdOnCreate="true"
-        android:gravity="top"
-        ads:testDevices="TEST_EMULATOR,SH15NTR29817"
-    />
-    <!-- ads:testDevices="TEST_EMULATOR" -->
+        android:gravity="center" >
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ad" />
+        android:layout_below="@id/ad_container" />
     
 </RelativeLayout>

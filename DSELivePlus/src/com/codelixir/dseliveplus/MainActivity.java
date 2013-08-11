@@ -31,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -64,6 +65,26 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		setContentView(R.layout.main);
+		
+		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
+		
+		String ad_id=adman.getID();
+		
+		if(ad_id!=""){
+			
+			LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
+			
+			AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+			
+			ad_container.addView(mAdView);
+			
+			AdRequest mAdRequest = new AdRequest();
+			
+			//mAdRequest.addTestDevice("SH15NTR29817");
+			
+			mAdView.loadAd(mAdRequest);
+			
+		}
 		
 		/** Getting a reference to action bar of this activity */
 		mActionBar = getSupportActionBar();

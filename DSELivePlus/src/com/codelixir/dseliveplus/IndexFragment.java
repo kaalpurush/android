@@ -37,7 +37,7 @@ public class IndexFragment extends SherlockFragment{
     	super.onActivityCreated(savedInstanceState);
     	webview = (WebView)getActivity().findViewById(R.id.webView1); 
     	webview.getSettings().setJavaScriptEnabled(true);
-    	webview.loadUrl("file:///android_asset/www/index.html");
+    	webview.loadUrl("http://dse-live.appspot.com/template/index.html");
     }
     
     @Override
