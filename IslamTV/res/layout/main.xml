@@ -3,25 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
     
-     <com.google.ads.AdView
-        android:id="@+id/ad"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ad_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="top"
-        ads:adSize="BANNER"
-        ads:adUnitId="a151474eacaa223"
-        ads:loadAdOnCreate="true"        
-        ads:testDevices="TEST_EMULATOR,SH15NTR29817"
-    />
+        android:layout_centerHorizontal="true"
+        android:gravity="center" >
+    </LinearLayout>
 	
 	<ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-		android:layout_below="@id/ad" />
+		android:layout_below="@id/ad_container" />
 
 </RelativeLayout>

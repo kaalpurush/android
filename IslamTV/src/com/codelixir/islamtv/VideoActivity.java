@@ -20,6 +20,8 @@ import java.util.Calendar;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdView;
 
@@ -34,6 +36,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class VideoActivity extends Activity implements AdListener,OnPreparedListener,OnErrorListener{
@@ -54,13 +57,31 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
 		
 		setContentView(R.layout.video);
 		
-		mAdView = (AdView)findViewById(R.id.ad);
+		if(!shouldHideAd()){
 		
-		mAdView.setAdListener(this);		
-		
-		if(shouldHideAd())
-			mAdView.removeAllViews();
-		
+			AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
+			
+			String ad_id=adman.getID();
+			
+			if(ad_id!=""){
+				
+				LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
+				
+				AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+				
+				mAdView.setAdListener(this);
+				
+				ad_container.addView(mAdView);
+				
+				AdRequest mAdRequest = new AdRequest();
+				
+				//mAdRequest.addTestDevice("SH15NTR29817");
+				
+				mAdView.loadAd(mAdRequest);
+				
+			}
+		}		
+	
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
 		mVideoView.setVideoPath(path);
 		mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
@@ -118,7 +139,7 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
 	@Override
 	public void onDismissScreen(Ad arg0) {
 		hideAd();
-		toast(getResources().getString(R.string.ad_disabled));
+		//toast(getResources().getString(R.string.ad_disabled));
 	};
 	
 	@Override

@@ -2,8 +2,7 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <io.vov.vitamio.widget.CenterLayout
         android:layout_width="match_parent"
@@ -18,17 +17,13 @@
             android:layout_centerVertical="true" />
     </io.vov.vitamio.widget.CenterLayout>
 
-     <com.google.ads.AdView
-        android:id="@+id/ad"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ad_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-		android:gravity="top"
-        ads:adSize="BANNER"
-        ads:adUnitId="a151474eacaa223"
-        ads:loadAdOnCreate="true"
-        ads:testDevices="TEST_EMULATOR,SH15NTR29817"
-    />
+        android:layout_centerHorizontal="true"
+        android:gravity="center" >
+    </LinearLayout>
 
 </RelativeLayout>

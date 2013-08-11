@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,9 +81,27 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 
 		setContentView(R.layout.main);
 		
-		AdView mAdView= (AdView)findViewById(R.id.ad);
+		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
 		
-		mAdView.setAdListener(this);
+		String ad_id=adman.getID();
+		
+		if(ad_id!=""){
+			
+			LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
+			
+			AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+			
+			mAdView.setAdListener(this);
+			
+			ad_container.addView(mAdView);
+			
+			AdRequest mAdRequest = new AdRequest();
+			
+			//mAdRequest.addTestDevice("SH15NTR29817");
+			
+			mAdView.loadAd(mAdRequest);
+			
+		}
 		
         c_adapter = new ChannelAdapter(this, R.layout.list_channel, channels);        
 
