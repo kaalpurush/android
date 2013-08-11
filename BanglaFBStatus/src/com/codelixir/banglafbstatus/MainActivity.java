@@ -1,5 +1,9 @@
 package com.codelixir.banglafbstatus;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,6 +25,7 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -89,6 +94,26 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.main);
+		
+		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
+		
+		String ad_id=adman.getID();
+		
+		if(ad_id!=""){
+			
+			LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
+			
+			AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+			
+			ad_container.addView(mAdView);
+			
+			AdRequest mAdRequest = new AdRequest();
+			
+			//mAdRequest.addTestDevice("SH15NTR29817");
+			
+			mAdView.loadAd(mAdRequest);
+			
+		}		
 		
     	webview = (WebView)activity.findViewById(R.id.webView); 
     	webview.getSettings().setJavaScriptEnabled(true);

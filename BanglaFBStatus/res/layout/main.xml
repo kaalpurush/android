@@ -7,16 +7,12 @@
     android:layout_gravity="center_vertical"
     android:orientation="vertical">
     
-     <com.google.ads.AdView
-        android:id="@+id/ad"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ad_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="a15106c8cf59fa6"
-        ads:loadAdOnCreate="true"
-        android:gravity="top"
-        ads:testDevices="TEST_EMULATOR,SH15NTR29817"
-    />    
+        android:gravity="center" >
+    </LinearLayout>
 
     <WebView
         android:id="@+id/webView"
