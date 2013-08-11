@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,8 +64,15 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 		String url=lu.getText().toString();
 		TextView ln= (TextView)v.findViewById(R.id.name);		
 		String name=ln.getText().toString();
-		showVideo(url, name);
+		processVideo(url, name);
 	};
+	
+	private void processVideo(String url, String title){
+		if(url.contains("jagobd"))
+			showWebVideo(url, title);
+		else
+			showVideo(url, title);
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,9 +88,27 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 
 		setContentView(R.layout.main);
 		
-		AdView mAdView= (AdView)findViewById(R.id.ad);
+		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
 		
-		mAdView.setAdListener(this);
+		String ad_id=adman.getID();
+		
+		if(ad_id!=""){
+			
+			LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
+			
+			AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+			
+			mAdView.setAdListener(this);
+			
+			ad_container.addView(mAdView);
+			
+			AdRequest mAdRequest = new AdRequest();
+			
+			//mAdRequest.addTestDevice("SH15NTR29817");
+			
+			mAdView.loadAd(mAdRequest);
+			
+		}
 		
         c_adapter = new ChannelAdapter(this, R.layout.list_channel, channels);        
 
@@ -289,7 +315,14 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 		myIntent.setData(Uri.parse(url));
 		myIntent.putExtra("displayName", title);
         startActivity(myIntent);
-    }	   
+    }	
+    
+    public void showWebVideo(String url, String title){
+		Intent myIntent = new Intent(getApplicationContext(), WebVideoActivity.class);
+		myIntent.setData(Uri.parse(url));
+		myIntent.putExtra("displayName", title);
+        startActivity(myIntent);
+    }	
 
 	public static String match(String nail, String hay) {
 		Pattern p = Pattern.compile(nail);

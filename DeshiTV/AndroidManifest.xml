@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codelixir.deshitv"
     android:installLocation="preferExternal"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="5"
+    android:versionName="1.4" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -42,6 +42,11 @@
             android:configChanges="orientation|keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        <activity
+            android:name=".WebVideoActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>        
         <activity
             android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation|screenSize|smallestScreenSize"

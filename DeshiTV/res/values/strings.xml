@@ -7,5 +7,6 @@
 	<string name="app_more">More apps from us</string>
 	<string name="loading">Loading..</string>
 	<string name="ad_disabled">Ad is disabled now for today! ENJOY!</string>
+	<string name="flash_required">Adobe Flash Player is required to play this channel!</string>
 	
 </resources>
