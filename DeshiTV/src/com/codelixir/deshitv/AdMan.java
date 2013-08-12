@@ -8,17 +8,16 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 public class AdMan {
 	
-	Activity activity;
+	Application app;
 	String appId;
 	
-	public AdMan(Activity activity, String appId) {
-		this.activity=activity;
+	public AdMan(Application app, String appId) {
+		this.app=app;
 		this.appId=appId;
 	}
 	
@@ -34,12 +33,12 @@ public class AdMan {
 	}
 	
 	private String getSetting(String key,String def){
-    	SharedPreferences settings = activity.getSharedPreferences("Settings", 0);
+    	SharedPreferences settings = app.getSharedPreferences("Settings", 0);
     	return settings.getString(key, def); 
     }
     
 	private Boolean putSetting(String key, String value){
-    	SharedPreferences settings = activity.getSharedPreferences("Settings", 0);
+    	SharedPreferences settings = app.getSharedPreferences("Settings", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();

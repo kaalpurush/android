@@ -15,6 +15,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -69,20 +70,24 @@ public class PortfolioActivity extends SherlockActivity {
 	    }
 
 	    /** Show a toast from the web page */
+	    @JavascriptInterface
 	    public String showToast(String toast) {
 	        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
 	        return toast;
 	    }
 	    
+	    @JavascriptInterface
 	    public String getPrice(String code){
 	    	return PriceFragment.prices.get(code);
 	    }
 	    
+	    @JavascriptInterface
 	    public String getSetting(String key){
 	    	SharedPreferences settings = activity.getSharedPreferences("Settings", 0);
 	    	return settings.getString(key, "[]"); 
 	    }
 	    
+	    @JavascriptInterface
 	    public Boolean putSetting(String key, String value){
 	    	SharedPreferences settings = activity.getSharedPreferences("Settings", 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -90,11 +95,13 @@ public class PortfolioActivity extends SherlockActivity {
             return editor.commit();
 	    }
 	    
+	    @JavascriptInterface
 	    public void showSpinner(String message,String title){
 	    	pDialog = ProgressDialog.show(activity, title, 
 	    			message, true);
 	    }
 	    
+	    @JavascriptInterface
 	    public void hideSpinner(){
 	    	try{
 	    		if(pDialog!=null && pDialog.isShowing())
@@ -105,16 +112,19 @@ public class PortfolioActivity extends SherlockActivity {
 	    	}
 	    }
 	    
+	    @JavascriptInterface
 	    public boolean viewUrl(String url){
 	    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 	    	return false;
 	    }
 	    
+	    @JavascriptInterface
 	    public boolean showApps(){
 	    	startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://search?q=pub:Codelixir+Lab")));
 	    	return false;
 	    }
 	    
+	    @JavascriptInterface
 	    public int versionCode(){
 	    	PackageInfo pInfo;
 			try {
@@ -127,6 +137,7 @@ public class PortfolioActivity extends SherlockActivity {
 			return -1;	    		    	
 	    }
 	    
+	    @JavascriptInterface
 	    public void exitApp(){
 	    	finish();
 	    }

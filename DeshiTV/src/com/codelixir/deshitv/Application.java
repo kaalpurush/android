@@ -9,7 +9,9 @@ public class Application extends android.app.Application {
 
 	public static final String BASEDIR = Environment.getExternalStorageDirectory().getPath()+"/tmp";
 	
-	public static boolean splashFinished=false;	
+	public static boolean splashFinished=false;
+	
+	public static String adUnitId="";
 	
 	@Override
 	public void onCreate() {
@@ -18,6 +20,9 @@ public class Application extends android.app.Application {
 		// init HttpImageManager manager.
 		mHttpImageManager = new HttpImageManager(HttpImageManager.createDefaultMemoryCache(), 
 				new FileSystemPersistence(BASEDIR));
+		
+		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
+		adUnitId=adman.getID();
 	}
 
 	

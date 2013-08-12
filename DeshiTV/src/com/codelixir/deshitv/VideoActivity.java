@@ -57,17 +57,13 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
 		
 		setContentView(R.layout.video);
 		
-		if(!shouldHideAd()){
-		
-			AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
+		//if(!shouldHideAd()){
 			
-			String ad_id=adman.getID();
-			
-			if(ad_id!=""){
+			if(Application.adUnitId!=""){
 				
 				LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
 				
-				AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+				AdView mAdView = new AdView(this, AdSize.BANNER, Application.adUnitId);
 				
 				mAdView.setAdListener(this);
 				
@@ -80,7 +76,7 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
 				mAdView.loadAd(mAdRequest);
 				
 			}
-		}		
+		//}		
 	
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
 		mVideoView.setVideoPath(path);
@@ -110,7 +106,6 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
 	}
 	
 	public void hideAd(){
-		mAdView.removeAllViews();
 		Calendar cal = Calendar.getInstance(); 		
 		putSetting("ad_day", String.valueOf(cal.get(Calendar.DATE)));
 	}
@@ -138,10 +133,8 @@ public class VideoActivity extends Activity implements AdListener,OnPreparedList
     
 	@Override
 	public void onDismissScreen(Ad arg0) {
-		try{
-			hideAd();
-		}catch(Exception e){}
-		//toast(getResources().getString(R.string.ad_disabled));
+		// TODO Auto-generated method stub
+		//hideAd();
 	};
 	
 	@Override

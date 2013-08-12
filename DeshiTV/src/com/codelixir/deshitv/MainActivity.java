@@ -88,15 +88,11 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 
 		setContentView(R.layout.main);
 		
-		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
-		
-		String ad_id=adman.getID();
-		
-		if(ad_id!=""){
+		if(Application.adUnitId!=""){
 			
 			LinearLayout ad_container = (LinearLayout)findViewById(R.id.ad_container);
 			
-			AdView mAdView = new AdView(this, AdSize.BANNER, ad_id);
+			AdView mAdView = new AdView(this, AdSize.BANNER, Application.adUnitId);
 			
 			mAdView.setAdListener(this);
 			
@@ -104,7 +100,7 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 			
 			AdRequest mAdRequest = new AdRequest();
 			
-			//mAdRequest.addTestDevice("SH15NTR29817");
+			mAdRequest.addTestDevice("BB94E3046543351C3331C90A53574828");
 			
 			mAdView.loadAd(mAdRequest);
 			
