@@ -100,6 +100,8 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 			
 			AdRequest mAdRequest = new AdRequest();
 			
+			mAdRequest.addTestDevice("5E5E95C252515979D9A831EAD134DAD7");
+			
 			mAdRequest.addTestDevice("BB94E3046543351C3331C90A53574828");
 			
 			mAdView.loadAd(mAdRequest);

@@ -10,16 +10,23 @@ import com.google.ads.AdSize;
 import com.google.ads.AdView;
 import com.google.ads.AdRequest.ErrorCode;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Window;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -53,6 +60,8 @@ public class WebVideoActivity extends Activity implements AdListener{
 				
 				AdRequest mAdRequest = new AdRequest();
 				
+				mAdRequest.addTestDevice("5E5E95C252515979D9A831EAD134DAD7");
+				
 				mAdRequest.addTestDevice("BB94E3046543351C3331C90A53574828");
 				
 				mAdView.loadAd(mAdRequest);
@@ -81,6 +90,7 @@ public class WebVideoActivity extends Activity implements AdListener{
     	webview.setBackgroundColor(Color.BLACK);
     	webview.getSettings().setJavaScriptEnabled(true);
     	webview.getSettings().setPluginsEnabled(true);
+    	webview.addJavascriptInterface(new JavaScriptInterface(this), "jsInterface");
     	webview.setWebViewClient(new WebViewClient() {            
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				//webview.loadUrl(url);
@@ -97,6 +107,95 @@ public class WebVideoActivity extends Activity implements AdListener{
 
     	webview.loadUrl(url);
 	
+	}
+	
+	public class JavaScriptInterface {
+	    Context mContext;
+	    ProgressDialog pDialog;
+	    String code="";
+
+	    /** Instantiate the interface and set the context */
+	    JavaScriptInterface(Context c) {
+	        mContext = c;
+	    }
+	    
+	    
+	    @JavascriptInterface
+	    public boolean auth(String code){
+	    	if(this.code==""){
+	    		this.code=code;
+	    		return true;
+	    	}
+	    	return false;
+	    }
+
+	    /** Show a toast from the web page */
+	    @JavascriptInterface
+	    public String showToast(String code,String toast) {
+	    	if(!this.code.equals(code)) return "";
+	        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+	        return toast;
+	    }
+	    
+	    @JavascriptInterface
+	    public void showSpinner(String code,String message,String title){
+	    	if(!this.code.equals(code)) return;
+	    	pDialog = ProgressDialog.show(WebVideoActivity.this, title, 
+	    			message, true);
+	    }
+	    
+	    @JavascriptInterface
+	    public void hideSpinner(String code){
+	    	if(!this.code.equals(code)) return;
+	    	try{
+	    		if(pDialog!=null && pDialog.isShowing())
+	    			pDialog.dismiss();
+	    	}
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    }
+	    
+	    @JavascriptInterface
+	    public boolean viewUrl(String code,String url){
+	    	if(!this.code.equals(code)) return false;
+	    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+	    	return false;
+	    }
+	    
+	    @JavascriptInterface
+	    public boolean showApps(String code){
+	    	if(!this.code.equals(code)) return false;
+	    	startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://search?q=pub:Codelixir+Lab")));
+	    	return false;
+	    }
+	    
+	    @JavascriptInterface
+	    public int versionCode(String code){
+	    	if(!this.code.equals(code)) return 0;
+	    	PackageInfo pInfo;
+			try {
+				pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+				return pInfo.versionCode;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			return -1;	    		    	
+	    }
+	    
+	    @JavascriptInterface	    
+	    public void finishActivity(String code){
+	    	if(!this.code.equals(code)) return;
+	    	finish();
+	    }
+	    
+	    @JavascriptInterface	    
+	    public void finishApp(String code){
+	    	if(!this.code.equals(code)) return;
+	    	System.exit(0);
+	    }
+	    
 	}
 	
 	@Override
