@@ -187,7 +187,7 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 	
     public void update() {
     	Log.d("updating", "Channel");
-    	String server="http://deshitv.appspot.com/channel";
+    	String server="http://deshitv.appspot.com/channel/bangla_new";
         downloader=new DownloadWebPageTask();
     	downloader.execute(new String[] { server });
 	}

@@ -11,8 +11,11 @@ import com.google.ads.AdView;
 import com.google.ads.AdRequest.ErrorCode;
 
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -25,6 +28,7 @@ import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -37,6 +41,15 @@ public class WebVideoActivity extends Activity implements AdListener{
 	WebView webview;
 	private AdView mAdView;
 	private FullscreenWebChromeClient mFullscreenWebChromeClient = null;
+	
+	Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message hmsg) {
+			if (hmsg.what == 1) {
+				webview.setVisibility(View.VISIBLE);
+			}
+		}		
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +109,32 @@ public class WebVideoActivity extends Activity implements AdListener{
 				//webview.loadUrl(url);
 			    return true;
 			}
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				view.loadUrl("javascript:$('body').html($('.entry iframe').parent().html());" +
+						"$('body').css('background','black');" +
+						"var old_width=$('iframe').width();" +
+						"var old_height=$('iframe').height();" +
+						"var ratio=$('body').width()/$('iframe').width();" +
+						"var new_width=old_width*ratio;" +
+						"var new_height=old_height*ratio;" +
+						"$('iframe').width(new_width);" +	
+						"$('iframe').height(new_height);" +
+						"var src=$('iframe').attr('src');" +
+						"src=src.replace(old_width,new_width);" +
+						"src=src.replace(old_height,new_height);" +
+						"$('iframe').attr('src',src);");
+				
+				mHandler.sendEmptyMessageDelayed(1, 4000);  
+				//view.setVisibility(View.VISIBLE);
+			}
+			
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+		        super.onReceivedError(view, errorCode, description, failingUrl);	
+		        view.loadData("<a href='#'>Connection Error!</a>", "text/html; charset=UTF-8", "utf-8");
+		    }
+			
     	});
     	
     	if(Build.VERSION.SDK_INT<14) 	
