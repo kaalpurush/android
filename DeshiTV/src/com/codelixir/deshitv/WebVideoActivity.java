@@ -117,8 +117,8 @@ public class WebVideoActivity extends Activity implements AdListener{
 						"var old_width=$('iframe').width();" +
 						"var old_height=$('iframe').height();" +
 						"var ratio=$('body').width()/$('iframe').width();" +
-						"var new_width=old_width*ratio;" +
-						"var new_height=old_height*ratio;" +
+						"var new_width=Math.round(old_width*ratio);" +
+						"var new_height=Math.round(old_height*ratio);" +
 						"$('iframe').width(new_width);" +	
 						"$('iframe').height(new_height);" +
 						"var src=$('iframe').attr('src');" +
