@@ -11,21 +11,27 @@ import com.google.ads.AdView;
 import com.google.ads.AdRequest.ErrorCode;
 
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +47,9 @@ public class WebVideoActivity extends Activity implements AdListener{
 	WebView webview;
 	private AdView mAdView;
 	private FullscreenWebChromeClient mFullscreenWebChromeClient = null;
+	
+	private long enqueue;
+    private DownloadManager dm;
 	
 	Handler mHandler = new Handler() {
 		@Override
@@ -81,21 +90,33 @@ public class WebVideoActivity extends Activity implements AdListener{
 				
 			}
 		//}
+			
+		
 		
 		Toast.makeText(getApplicationContext(), getResources().getString(R.string.flash_required), Toast.LENGTH_SHORT).show();
 		
-		Intent intent = new Intent();
-
-	    intent.setComponent(new ComponentName("com.adobe.flashplayer", "com.adobe.flashplayer.FlashExpandableFileChooser"));
-	    PackageManager pm = getPackageManager();
-	    List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
-	    if (activities != null && activities.size() > 0) {
-	        Toast.makeText(this, "Loading...Please Wait!", Toast.LENGTH_LONG).show();
+		if(Build.VERSION.SDK_INT>18){
+			Toast.makeText(this, "Flash Player not supported!", Toast.LENGTH_SHORT).show();
+			finish();
+		}
+		
+		if(isFlashPlayerInstalled()){
+			new JavaScriptInterface(this).showSpinner("Loading...Please Wait!", "Loading");
 	    }
 	    else {
-	        Toast.makeText(this, "Flash Player not installed! Please install Flash Player from Play Store.", Toast.LENGTH_LONG).show();	        
+	    	new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle("Flash Player")
+			.setMessage("Flash Player not installed! You need to have it properly installed. Do you want to download Flash Player?")
+			.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int which) {
+							downloadFlashPlayer();
+						}
+					}).setNegativeButton("Cancel", null).show();
+	        	        
 	    }
-		
+	    
 		String url = getIntent().getDataString();
 		String title=getIntent().getStringExtra("displayName");
 		
@@ -124,7 +145,7 @@ public class WebVideoActivity extends Activity implements AdListener{
 						"var src=$('iframe').attr('src');" +
 						"src=src.replace(old_width,new_width);" +
 						"src=src.replace(old_height,new_height);" +
-						"$('iframe').attr('src',src);");
+						"$('iframe').attr('src',src);jsInterface.hideSpinner();");
 				
 				mHandler.sendEmptyMessageDelayed(1, 4000);  
 				//view.setVisibility(View.VISIBLE);
@@ -151,41 +172,28 @@ public class WebVideoActivity extends Activity implements AdListener{
 	public class JavaScriptInterface {
 	    Context mContext;
 	    ProgressDialog pDialog;
-	    String code="";
 
 	    /** Instantiate the interface and set the context */
 	    JavaScriptInterface(Context c) {
 	        mContext = c;
 	    }
 	    
-	    
-	    @JavascriptInterface
-	    public boolean auth(String code){
-	    	if(this.code==""){
-	    		this.code=code;
-	    		return true;
-	    	}
-	    	return false;
-	    }
 
 	    /** Show a toast from the web page */
 	    @JavascriptInterface
-	    public String showToast(String code,String toast) {
-	    	if(!this.code.equals(code)) return "";
+	    public String showToast(String toast) {
 	        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
 	        return toast;
 	    }
 	    
 	    @JavascriptInterface
-	    public void showSpinner(String code,String message,String title){
-	    	if(!this.code.equals(code)) return;
+	    public void showSpinner(String message,String title){
 	    	pDialog = ProgressDialog.show(WebVideoActivity.this, title, 
 	    			message, true);
 	    }
 	    
 	    @JavascriptInterface
-	    public void hideSpinner(String code){
-	    	if(!this.code.equals(code)) return;
+	    public void hideSpinner(){
 	    	try{
 	    		if(pDialog!=null && pDialog.isShowing())
 	    			pDialog.dismiss();
@@ -196,22 +204,19 @@ public class WebVideoActivity extends Activity implements AdListener{
 	    }
 	    
 	    @JavascriptInterface
-	    public boolean viewUrl(String code,String url){
-	    	if(!this.code.equals(code)) return false;
+	    public boolean viewUrl(String url){
 	    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 	    	return false;
 	    }
 	    
 	    @JavascriptInterface
-	    public boolean showApps(String code){
-	    	if(!this.code.equals(code)) return false;
+	    public boolean showApps(){
 	    	startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://search?q=pub:Codelixir+Lab")));
 	    	return false;
 	    }
 	    
 	    @JavascriptInterface
-	    public int versionCode(String code){
-	    	if(!this.code.equals(code)) return 0;
+	    public int versionCode(){
 	    	PackageInfo pInfo;
 			try {
 				pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -224,14 +229,12 @@ public class WebVideoActivity extends Activity implements AdListener{
 	    }
 	    
 	    @JavascriptInterface	    
-	    public void finishActivity(String code){
-	    	if(!this.code.equals(code)) return;
+	    public void finishActivity(){
 	    	finish();
 	    }
 	    
 	    @JavascriptInterface	    
-	    public void finishApp(String code){
-	    	if(!this.code.equals(code)) return;
+	    public void finishApp(){
 	    	System.exit(0);
 	    }
 	    
@@ -272,6 +275,32 @@ public class WebVideoActivity extends Activity implements AdListener{
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();
+    }
+    
+    public Boolean isFlashPlayerInstalled(){
+		Intent intent = new Intent();
+	    intent.setComponent(new ComponentName("com.adobe.flashplayer", "com.adobe.flashplayer.FlashExpandableFileChooser"));
+	    PackageManager pm = getPackageManager();
+	    List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
+	    return activities != null && activities.size() > 0;
+    }
+    
+    public void downloadFlashPlayer(){
+    	String flash_url;
+    	if(Build.VERSION.SDK_INT<Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    		flash_url="http://download.macromedia.com/pub/flashplayer/installers/archive/android/11.1.111.73/install_flash_player_pre_ics.apk";
+    	else
+    		flash_url="http://download.macromedia.com/pub/flashplayer/installers/archive/android/11.1.115.81/install_flash_player_ics.apk";
+    	
+    	dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+    	DownloadManager.Request request = new DownloadManager.Request(Uri.parse(flash_url));
+    	request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "flash_player.apk");
+    	request.setMimeType("application/vnd.android.package-archive");
+        enqueue = dm.enqueue(request);
+        Intent i = new Intent();
+        i.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
+        startActivity(i);
+        finish();
     }
     
 	@Override
