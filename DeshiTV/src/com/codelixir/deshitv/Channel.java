@@ -9,5 +9,6 @@ public class Channel {
     public String description;
     public String rating;
     public String website;
+    public String code;
     
 }

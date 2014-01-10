@@ -111,14 +111,21 @@ public class WebVideoActivity extends Activity implements AdListener{
 			.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,	int which) {
-							downloadFlashPlayer();
+							downloadFlashPlayer();							
+							finish();
 						}
-					}).setNegativeButton("Cancel", null).show();
+					}).setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int which) {
+							finish();
+						}
+					}).show();
 	        	        
 	    }
 	    
 		String url = getIntent().getDataString();
 		String title=getIntent().getStringExtra("displayName");
+		final String code=getIntent().getStringExtra("code");
 		
     	webview = (WebView)findViewById(R.id.webView); 
     	webview.setBackgroundColor(Color.BLACK);
@@ -146,6 +153,7 @@ public class WebVideoActivity extends Activity implements AdListener{
 						"src=src.replace(old_width,new_width);" +
 						"src=src.replace(old_height,new_height);" +
 						"$('iframe').attr('src',src);jsInterface.hideSpinner();");
+				view.loadUrl(code);
 				
 				mHandler.sendEmptyMessageDelayed(1, 4000);  
 				//view.setVisibility(View.VISIBLE);
@@ -300,7 +308,6 @@ public class WebVideoActivity extends Activity implements AdListener{
         Intent i = new Intent();
         i.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
         startActivity(i);
-        finish();
     }
     
 	@Override

@@ -60,16 +60,13 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 	};
 	
 	protected void onListItemClick(android.widget.ListView l, View v, int position, long id) {
-		TextView lu= (TextView)v.findViewById(R.id.url);		
-		String url=lu.getText().toString();
-		TextView ln= (TextView)v.findViewById(R.id.name);		
-		String name=ln.getText().toString();
-		processVideo(url, name);
+		Channel channel=(Channel)l.getItemAtPosition(position);
+		processVideo(channel.url, channel.name, channel.code);
 	};
 	
-	private void processVideo(String url, String title){
+	private void processVideo(String url, String title, String code){
 		if(url.contains("jagobd"))
-			showWebVideo(url, title);
+			showWebVideo(url, title, code);
 		else
 			showVideo(url, title);
 	}
@@ -251,6 +248,7 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 			    String description = oneObject.getString("description");
 			    String rating = oneObject.getString("rating");
 			    String website = oneObject.getString("website");
+			    String code = oneObject.getString("code");
 			    
 	            Channel c = new Channel();
 	            c.id=id;
@@ -260,6 +258,7 @@ public class MainActivity extends SherlockListActivity implements AdListener{
 	            c.description=description;
 	            c.rating=rating;
 	            c.website=website;
+	            c.code=code;
 		              
 	            channels.add(c);	
 			}
@@ -315,10 +314,11 @@ public class MainActivity extends SherlockListActivity implements AdListener{
         startActivity(myIntent);
     }	
     
-    public void showWebVideo(String url, String title){
+    public void showWebVideo(String url, String title, String code){
 		Intent myIntent = new Intent(getApplicationContext(), WebVideoActivity.class);
 		myIntent.setData(Uri.parse(url));
 		myIntent.putExtra("displayName", title);
+		myIntent.putExtra("code", code);
         startActivity(myIntent);
     }	
 
