@@ -11,7 +11,8 @@
         android:id="@+id/ad_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="left" 
+        android:orientation="horizontal">
     </LinearLayout>
 
     <WebView

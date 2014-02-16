@@ -28,8 +28,6 @@ public class PortfolioActivity extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setTheme(R.style.Theme_Dselive);
-		
 		Log.d("@","PortfolioActivity.onCreate");
 		
 		activity=this;

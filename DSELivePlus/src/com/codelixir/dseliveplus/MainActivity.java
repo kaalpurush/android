@@ -58,8 +58,6 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 		
 		final ActionBar mActionBar;
 		
-		setTheme(R.style.Theme_Dselive);
-		
 		Log.d("@","MainActivity.onCreate");
 		
 		if(!isOnline()) toast("This application requires an active internet connection.");
