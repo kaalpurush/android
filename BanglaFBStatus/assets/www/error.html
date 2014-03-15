@@ -1,92 +1,18 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
-	<title>Bangla FB</title> 
-	
+	<title>Bangla FB</title>	
 	<meta name="viewport" content="width=320, initial-scale=1, user-scalable=no,"> 
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<link rel="stylesheet" href="media/style.css" />
-	<link rel="stylesheet" href="media/jquery.mobile-1.2.0.css" />	
-	<style>
-		body::-webkit-scrollbar { 
-			display: none; 
-		}
-		.ui-body-c,.ui-overlay-c {background:none;}
-		.facebook_feed_item *{font-family: Vrinda;}
-		.ui-footer .ui-title {margin: 0.3em 15px 0.3em;}
-		.ui-content{margin-top:50px;}
-		.left{float:left;}
-		.right{float:right;}
-		.header h1{min-width:20%;margin:2px;}
-		.header.ui-bar{padding:0;border:0;}
-		.header.ui-bar .ui-btn-inner{padding:0.2em 1.9em;}
-		.header a,.header a span{border-radius:0 0;}
-		body,.divfeed{font-family: Vrinda;}
-		#home{font-size:12px;}
-		.red{color:red;}
-		.green{color:green;}
-		.mid-block{width:170px; margin: 0 auto;}
-		.clear{clear:both;}
-		.hidden { display:none; }
-		#txtstatus{box-shadow:5px 5px;border:1px solid black;font-family: Vrinda;}
-		#divlogin a{overflow:hidden;height:auto;display:inline-block;}
-		#divlogin a:hover,#divlogin a:active{opacity:0.7;cursor:pointer;}
-		#divstatus a{float:right;}
-		#fbpic{float:right;border:1px solid black;border-radius:10px;}
-		@font-face{  
-			font-family: Vrinda;  
-			src: url('media/vrinda.ttf') format('truetype');			
-		}
-	</style>
-	<script type="text/javascript" src="media/jquery.js"></script>
-	<script type="text/javascript" src="media/jquery.mobile-1.2.0.min.js"></script>
 </head> 
 
-<body noonload="init();"> 
-	<div id="fb-root"></div>
+<body> 
 	<div data-role="page" id="home">
-
-		<div class="header ui-bar ui-bar-a ui-header-fixed" data-position="inline">
-			<a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-btn-left">Home</a>
-			<a href="#about" data-icon="info" data-transition="none" class="ui-btn-right">About</a>
-			<a onclick="jsInterface.exitApp();" data-icon="back" class="ui-btn-right">Exit</a>
-			<h1 class="right">Bangla FB</h1>		
-		</div>
-
 		<div data-role="content">		
 			<div class="ui-body ui-body-c" id="divhome"> 
 			<div class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-right ui-focus ui-btn-up-b">Network Error!</div>
 			</div>
 		</div><!-- /content -->
-		<div data-role="footer" data-position="fixed"> 
-			<h4>&copy; codelixir.com, 2013</h4> 
-		</div> 
 	</div><!-- /page -->
-
-	<div data-role="page" id="about">
-
-		<div class="header ui-bar ui-bar-a ui-header-fixed" data-position="inline">		
-			<a href="#home" data-icon="home" data-transition="none" class="ui-btn-left">Home</a>
-			<a href="#about" data-icon="info" data-transition="none" class="ui-btn-active ui-btn-right">About</a>
-			<a onclick="jsInterface.exitApp();" data-icon="back" class="ui-btn-right">Exit</a>
-			<h1 class="right">Bangla FB</h1>	
-		</div>
-
-		<div data-role="content">	
-			<div class="ui-body ui-body-c">
-				<img class="left" src="media/images/icon.png" height="50">
-				<div class="mid-block">		
-						<h3>Bangla FB</h3>				
-						Presented By<br />
-						<a href="http://www.codelixir.com/" target="_blank">Codelixir Lab</a><br /><br />						
-						<a href="https://play.google.com/store/apps/developer?id=Codelixir+Lab" onclick="return jsInterface.showApps();">More Apps From Us</a>
-				</div><!-- /grid-b -->
-			</div>
-		</div><!-- /content -->
-		<div data-role="footer" data-position="fixed"> 
-			<h4>&copy; codelixir.com, 2013</h4> 
-		</div> 
-	</div><!-- /page -->	
-
 </body>
 </html>
