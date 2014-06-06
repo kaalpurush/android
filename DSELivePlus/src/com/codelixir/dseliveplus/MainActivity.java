@@ -156,10 +156,10 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 
 		mActionBar.addTab(tab);
 		
-		Calendar cal = Calendar.getInstance(); 		
+		//Calendar cal = Calendar.getInstance(); 		
 		
-		if(savedInstanceState==null && cal.get(Calendar.MONTH)==3)
-			showSplash();
+		//if(savedInstanceState==null && cal.get(Calendar.MONTH)==3)
+			//showSplash();
 	}
 
 	public void progress(boolean state) {
