@@ -189,7 +189,7 @@ public class MainActivity extends Activity {
     	if(savedInstanceState==null){
 	    	pDialog = ProgressDialog.show(activity, "Bangla FB Status", 
 	                "Loading... Please wait...", true);
-	    	pDialog.setIcon(R.drawable.icon);
+	    	pDialog.setIcon(R.drawable.ic_launcher);
     	}
 	}
 	
