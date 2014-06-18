@@ -240,7 +240,7 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 		View aboutView = getLayoutInflater().inflate(R.layout.about, null,
 				false);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.icon);
+		builder.setIcon(R.drawable.ic_launcher);
 		builder.setTitle(R.string.app_name);
 		builder.setView(aboutView);
 		builder.show();
@@ -257,7 +257,7 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 		AdView adview=(AdView)splashView.findViewById(R.id.ad);
 		adview.setAdListener(this);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.icon);
+		builder.setIcon(R.drawable.ic_launcher);
 		builder.setTitle(R.string.app_name);
 		builder.setView(splashView);
 		builder.setCancelable(false);			
@@ -274,7 +274,7 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 		WebView webview = (WebView)companyView.findViewById(R.id.webView2);
     	webview.loadUrl("http://www.dsebd.org/print_Company.php?name="+company);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.icon);
+		builder.setIcon(R.drawable.ic_launcher);
 		builder.setTitle(company);
 		builder.setView(companyView);
 		builder.show();
