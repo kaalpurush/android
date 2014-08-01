@@ -30,7 +30,7 @@ public class AdMan {
 	private void downloadID(){
 		String server="http://deshiapp.appspot.com/ad/"+appId;
 		DownloadWebPageTask downloader=new DownloadWebPageTask();
-    	downloader.execute(new String[] { server });
+    	downloader.execute(server);
 	}
 	
 	private String getSetting(String key,String def){

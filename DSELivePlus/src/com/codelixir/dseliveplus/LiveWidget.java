@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.text.format.Time;
 import android.widget.RemoteViews;
@@ -55,5 +56,22 @@ public class LiveWidget extends AppWidgetProvider {
                                 
             return views;
         }
+        
+    	public Boolean putSetting(String key, String value){
+        	SharedPreferences settings = getSharedPreferences("Widget", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(key, value);
+            return editor.commit();
+        }
+    	
+    	public Boolean deleteSetting(String key) {
+    		SharedPreferences settings = getSharedPreferences("Widget", 0);
+    		SharedPreferences.Editor editor = settings.edit();
+    		editor.remove(key);
+    		return editor.commit();
+    	}
+        
     }
+    
+    
 }

@@ -34,7 +34,6 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,7 +63,7 @@ public class MainActivity extends SherlockFragmentActivity implements AdListener
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_main);
 		
 		AdMan adman=new AdMan(this,getApplicationContext().getPackageName());
 		
