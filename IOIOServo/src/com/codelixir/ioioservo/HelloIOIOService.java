@@ -1,6 +1,5 @@
-package ioio.examples.hello_service;
+package com.codelixir.ioioservo;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,9 +8,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.RingtoneManager;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
+import android.support.v4.app.NotificationCompat;
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
@@ -29,8 +29,12 @@ import ioio.lib.util.android.IOIOService;
 public class HelloIOIOService extends IOIOService implements
 		SensorEventListener {
 
+	NotificationManager mNotificationManager;
+	public static final int NOTIFICATION_ID = 1;
+
 	float tilt;
 	boolean mLed;
+	int lastRoll = 0;
 
 	/* sensor data */
 	SensorManager m_sensorManager;
@@ -79,10 +83,13 @@ public class HelloIOIOService extends IOIOService implements
 
 				int roll = (int) (554 + (1836 / 20 * (tilt + 10)));
 
-				//Log.d("roll", String.valueOf(roll));
+				// Log.d("roll", String.valueOf(roll));
 
-				if (roll > 554 && roll < 2390)
+				if (Math.abs(lastRoll - roll) > 100 && roll > 554
+						&& roll < 2390) {
 					pwmOutput_.setPulseWidth(roll);
+					lastRoll = roll;
+				}
 
 				led_.write(!mLed);
 
@@ -94,27 +101,43 @@ public class HelloIOIOService extends IOIOService implements
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		if (intent != null && intent.getAction() != null
-				&& intent.getAction().equals("stop")) {
-			// User clicked the notification. Need to stop the service.
-			nm.cancel(0);
-			stopSelf();
-		} else {
-			// Service starting. Create a notification.
-			Notification notification = new Notification(
-					R.drawable.ic_launcher, "IOIO service running",
-					System.currentTimeMillis());
-			notification
-					.setLatestEventInfo(this, "IOIO Service", "Click to stop",
-							PendingIntent.getService(this, 0, new Intent(
-									"stop", null, this, this.getClass()), 0));
-			notification.flags |= Notification.FLAG_ONGOING_EVENT;
-			nm.notify(0, notification);
-		}
-
+		showNotification();
 		m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		registerListeners();
+	}
+
+	@Override
+	public void onDestroy() {
+		// Cancel the persistent notification.
+		mNotificationManager.cancel(NOTIFICATION_ID);
+		super.onDestroy();
+	}
+
+	private void showNotification() {
+		mNotificationManager = (NotificationManager) this
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				new Intent(this, MainActivity.class), 0);
+
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(getText(R.string.app_name))
+				.setSound(
+						RingtoneManager
+								.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+				.setContentIntent(contentIntent).setOngoing(true);
+
+		Intent buttonIntent = new Intent(this, IntentActivity.class);
+		buttonIntent.setAction("stopService");
+		PendingIntent buttonPendingIntent = PendingIntent.getActivity(this, 0,
+				buttonIntent, 0);
+
+		mBuilder.addAction(R.drawable.stop, "Stop", buttonPendingIntent);
+
+		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
 	}
 
 	public void toggleLed() {

@@ -1,7 +1,7 @@
-package ioio.examples.hello_service;
+package com.codelixir.ioioservo;
 
-import ioio.examples.hello_service.HelloIOIOService.IHelloIOIOService;
-import ioio.examples.hello_service.HelloIOIOService.IOIOBinder;
+import com.codelixir.ioioservo.HelloIOIOService.IHelloIOIOService;
+import com.codelixir.ioioservo.HelloIOIOService.IOIOBinder;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
