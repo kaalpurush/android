@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
@@ -76,14 +77,15 @@ public class HelloIOIOService extends IOIOService implements
 				final float reading = input_.read();
 				// setText(Float.toString(reading));
 
-				int roll = (int) ((tilt + 7) * 100.0);
+				int roll = (int) (554 + (1836 / 20 * (tilt + 10)));
 
-				if ((750 + roll) > 750 && (750 + roll) < 2250)
-					pwmOutput_.setPulseWidth(750 + roll);
+				//Log.d("roll", String.valueOf(roll));
 
-				// Log.d("tilt",String.valueOf(tilt));
+				if (roll > 554 && roll < 2390)
+					pwmOutput_.setPulseWidth(roll);
+
 				led_.write(!mLed);
-				// Log.d("roll", String.valueOf(m_lastRoll));
+
 				Thread.sleep(10);
 			}
 		};
